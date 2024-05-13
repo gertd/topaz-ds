@@ -30,7 +30,7 @@ topaz directory import --directory ./ds/data --host localhost:19292 --insecure
       relations 46
 ```
 
-Make identity resolution request to `az1` using:
+Make identity resolution request to `az1` using `grpcurl`:
 
 ```
 grpcurl -insecure -d '{
@@ -91,7 +91,7 @@ Result:
 }
 ```
 
-Make identity resolution request to `az2` using:
+Make identity resolution request to `az2` using `grpcurl`:
 
 ```
 grpcurl -insecure -d '{
@@ -149,5 +149,131 @@ Result:
     ]
   },
   "metrics": {}
+}
+```
+
+Make identity resolution request to `az1` using `curl`:
+
+```
+curl -k -X POST -d '{
+  "query": "x = input",
+  "identityContext": {
+    "identity": "beth@the-smiths.com",
+    "type": "IDENTITY_TYPE_SUB"
+  }
+}' https://localhost:29393/api/v2/authz/query
+```
+
+Result:
+
+```
+{
+  "response":  {
+    "result":  [
+      {
+        "bindings":  {
+          "x":  {
+            "identity":  {
+              "identity":  "beth@the-smiths.com",
+              "type":  "IDENTITY_TYPE_SUB"
+            },
+            "user":  {
+              "created_at":  "2024-05-13T22:21:08.345990709Z",
+              "display_name":  "Beth Smith",
+              "etag":  "512654990579550493",
+              "id":  "beth@the-smiths.com",
+              "key":  "beth@the-smiths.com",
+              "properties":  {
+                "email":  "beth@the-smiths.com",
+                "picture":  "https://www.topaz.sh/assets/templates/citadel/img/Beth%20Smith.jpg",
+                "roles":  [
+                  "viewer"
+                ],
+                "status":  "USER_STATUS_ACTIVE"
+              },
+              "type":  "user",
+              "updated_at":  "2024-05-13T22:21:08.345990709Z"
+            }
+          }
+        },
+        "expressions":  [
+          {
+            "location":  {
+              "col":  1,
+              "row":  1
+            },
+            "text":  "x = input",
+            "value":  true
+          }
+        ]
+      }
+    ]
+  },
+  "metrics":  {},
+  "trace":  [],
+  "trace_summary":  []
+}
+```
+
+Make identity resolution request to `az2` using `curl`:
+
+```
+curl -k -X POST -d '{
+  "query": "x = input",
+  "identityContext": {
+    "identity": "beth@the-smiths.com",
+    "type": "IDENTITY_TYPE_SUB"
+  }
+}' https://localhost:39393/api/v2/authz/query
+```
+
+Result:
+
+```
+{
+  "response":  {
+    "result":  [
+      {
+        "bindings":  {
+          "x":  {
+            "identity":  {
+              "identity":  "beth@the-smiths.com",
+              "type":  "IDENTITY_TYPE_SUB"
+            },
+            "user":  {
+              "created_at":  "2024-05-13T22:21:08.345990709Z",
+              "display_name":  "Beth Smith",
+              "etag":  "512654990579550493",
+              "id":  "beth@the-smiths.com",
+              "key":  "beth@the-smiths.com",
+              "properties":  {
+                "email":  "beth@the-smiths.com",
+                "picture":  "https://www.topaz.sh/assets/templates/citadel/img/Beth%20Smith.jpg",
+                "roles":  [
+                  "viewer"
+                ],
+                "status":  "USER_STATUS_ACTIVE"
+              },
+              "type":  "user",
+              "updated_at":  "2024-05-13T22:21:08.345990709Z"
+            }
+          }
+        },
+        "expressions":  [
+          {
+            "location":  {
+              "col":  1,
+              "row":  1
+            },
+            "text":  "x = input",
+            "value":  true
+          }
+        ]
+      }
+    ]
+  },
+  "metrics":  {},
+  "trace":  [],
+  "trace_summary":  []
 }
 ```
