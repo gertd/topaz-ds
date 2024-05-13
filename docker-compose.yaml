@@ -1,0 +1,74 @@
+#see https://www.topaz.sh/docs/deployment/docker-compose for instructions
+version: "3.5"
+services:
+  topaz-ds:
+    command:
+      - run
+      - --config-file
+      - /config/config.yaml
+    container_name: topaz-ds
+    environment:
+      - TOPAZ_CERTS_DIR=/certs
+      - TOPAZ_DB_DIR=/db
+    image: ghcr.io/aserto-dev/topaz:0.32.2
+    ports:
+      - 19292:9292 # grpc
+      - 19393:9393 # http rest
+      - 19494:9494 # healthcheck
+      - 19696:9696 # metrics
+    networks:
+      - my-network
+    volumes:
+      - ./ds/certs:/certs
+      - ./ds/config:/config
+      - ./ds/db:/db
+  topaz-az1:
+    command:
+      - run
+      - --config-file
+      - /config/config.yaml
+    container_name: topaz-az1
+    environment:
+      - TOPAZ_CERTS_DIR=/certs
+      - TOPAZ_DB_DIR=/db
+    image: ghcr.io/aserto-dev/topaz:0.32.2
+    ports:
+      - 29292:9292 # grpc
+      - 29393:9393 # http rest
+      - 29494:9494 # healthcheck
+      - 29696:9696 # metrics
+    networks:
+      - my-network
+    volumes:
+      - ./az1/certs:/certs
+      - ./az1/config:/config
+    depends_on:
+      - topaz-ds
+  topaz-az2:
+    command:
+      - run
+      - --config-file
+      - /config/config.yaml
+    container_name: topaz-az2
+    environment:
+      - TOPAZ_CERTS_DIR=/certs
+      - TOPAZ_DB_DIR=/db
+    image: ghcr.io/aserto-dev/topaz:0.32.2
+    ports:
+      - 39292:9292 # grpc
+      - 39393:9393 # http rest
+      - 39494:9494 # healthcheck
+      - 39696:9696 # metrics
+    networks:
+      - my-network
+    volumes:
+      - ./az2/certs:/certs
+      - ./az2/config:/config
+      - ./az2/db:/db
+    depends_on:
+      - topaz-ds
+
+networks:
+  my-network:
+    driver: bridge
+    name: my-network
