@@ -11,7 +11,7 @@ The docker-compose setup consists of:
 Load the manifest into the directory using:
 
 ```
-topaz manifest set ./ds/model/manifest.yaml --host localhost:19292 --insecure
+topaz directory set manifest ./ds/model/manifest.yaml --host localhost:19292 --insecure
 ```
 
 ```
