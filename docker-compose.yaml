@@ -10,7 +10,7 @@ services:
     environment:
       - TOPAZ_CERTS_DIR=/certs
       - TOPAZ_DB_DIR=/db
-    image: ghcr.io/aserto-dev/topaz:0.32.2
+    image: ghcr.io/aserto-dev/topaz:latest
     ports:
       - 19292:9292 # grpc
       - 19393:9393 # http rest
@@ -31,7 +31,7 @@ services:
     environment:
       - TOPAZ_CERTS_DIR=/certs
       - TOPAZ_DB_DIR=/db
-    image: ghcr.io/aserto-dev/topaz:0.32.2
+    image: ghcr.io/aserto-dev/topaz:latest
     ports:
       - 29292:9292 # grpc
       - 29393:9393 # http rest
@@ -53,7 +53,7 @@ services:
     environment:
       - TOPAZ_CERTS_DIR=/certs
       - TOPAZ_DB_DIR=/db
-    image: ghcr.io/aserto-dev/topaz:0.32.2
+    image: ghcr.io/aserto-dev/topaz:latest
     ports:
       - 39292:9292 # grpc
       - 39393:9393 # http rest
