@@ -14,10 +14,59 @@ directory:
 api:
   health:
     listen_address: "0.0.0.0:9494"
+    
   metrics:
     listen_address: "0.0.0.0:9696"
     zpages: true
+
   services:
+    console:
+      grpc:
+        listen_address: "0.0.0.0:9292"
+        fqdn: ""
+        certs:
+          tls_key_path: '${TOPAZ_CERTS_DIR}/grpc.key'
+          tls_cert_path: '${TOPAZ_CERTS_DIR}/grpc.crt'
+          tls_ca_cert_path: '${TOPAZ_CERTS_DIR}/grpc-ca.crt'
+      gateway:
+        listen_address: "0.0.0.0:9393"
+        fqdn: "https://localhost:19393"
+        allowed_headers:
+        - "Authorization"
+        - "Content-Type"
+        - "If-Match"
+        - "If-None-Match"
+        - "Depth"
+        allowed_methods:
+        - "GET"
+        - "POST"
+        - "HEAD"
+        - "DELETE"
+        - "PUT"
+        - "PATCH"
+        - "PROFIND"
+        - "MKCOL"
+        - "COPY"
+        - "MOVE"
+        allowed_origins:
+        - http://localhost
+        - http://localhost:*
+        - https://localhost
+        - https://localhost:*
+        - https://0.0.0.0:*
+        - https://*.aserto.com
+        - https://*aserto-console.netlify.app
+        - https://topaz-ds:19393
+        certs:
+          tls_key_path: '${TOPAZ_CERTS_DIR}/gateway.key'
+          tls_cert_path: '${TOPAZ_CERTS_DIR}/gateway.crt'
+          tls_ca_cert_path: '${TOPAZ_CERTS_DIR}/gateway-ca.crt'
+        http: false
+        read_timeout: 2s
+        read_header_timeout: 2s
+        write_timeout: 2s
+        idle_timeout: 30s
+
     model:
       grpc:
         listen_address: "0.0.0.0:9292"
@@ -28,7 +77,7 @@ api:
           tls_ca_cert_path: '${TOPAZ_CERTS_DIR}/grpc-ca.crt'
       gateway:
         listen_address: "0.0.0.0:9393"
-        fqdn: "topaz-ds"
+        fqdn: "https://localhost:19393"
         certs:
           tls_key_path: '${TOPAZ_CERTS_DIR}/gateway.key'
           tls_cert_path: '${TOPAZ_CERTS_DIR}/gateway.crt'
@@ -68,14 +117,14 @@ api:
     reader:
       grpc:
         listen_address: "0.0.0.0:9292"
-        fqdn: ""
+        fqdn: "https://localhost:19393"
         certs:
           tls_key_path: '${TOPAZ_CERTS_DIR}/grpc.key'
           tls_cert_path: '${TOPAZ_CERTS_DIR}/grpc.crt'
           tls_ca_cert_path: '${TOPAZ_CERTS_DIR}/grpc-ca.crt'
       gateway:
         listen_address: "0.0.0.0:9393"
-        fqdn: "topaz-ds"
+        fqdn: "https://localhost:19393"
         certs:
           tls_key_path: '${TOPAZ_CERTS_DIR}/gateway.key'
           tls_cert_path: '${TOPAZ_CERTS_DIR}/gateway.crt'
@@ -122,7 +171,7 @@ api:
           tls_ca_cert_path: '${TOPAZ_CERTS_DIR}/grpc-ca.crt'
       gateway:
         listen_address: "0.0.0.0:9393"
-        fqdn: "topaz-ds"
+        fqdn: "https://localhost:19393"
         certs:
           tls_key_path: '${TOPAZ_CERTS_DIR}/gateway.key'
           tls_cert_path: '${TOPAZ_CERTS_DIR}/gateway.crt'
@@ -175,3 +224,74 @@ api:
           tls_key_path: '${TOPAZ_CERTS_DIR}/grpc.key'
           tls_cert_path: '${TOPAZ_CERTS_DIR}/grpc.crt'
           tls_ca_cert_path: '${TOPAZ_CERTS_DIR}/grpc-ca.crt'
+
+    authorizer:
+      needs:
+        - reader
+      grpc:
+        listen_address: "0.0.0.0:9292"
+        fqdn: ""
+        certs:
+          tls_key_path: '${TOPAZ_CERTS_DIR}/grpc.key'
+          tls_cert_path: '${TOPAZ_CERTS_DIR}/grpc.crt'
+          tls_ca_cert_path: '${TOPAZ_CERTS_DIR}/grpc-ca.crt'
+      gateway:
+        listen_address: "0.0.0.0:9393"
+        fqdn: "https://localhost:19393"
+        certs:
+          tls_key_path: '${TOPAZ_CERTS_DIR}/gateway.key'
+          tls_cert_path: '${TOPAZ_CERTS_DIR}/gateway.crt'
+          tls_ca_cert_path: '${TOPAZ_CERTS_DIR}/gateway-ca.crt'
+        allowed_origins:
+        - http://localhost
+        - http://localhost:*
+        - https://localhost
+        - https://localhost:*
+        - https://0.0.0.0:*
+        - https://*.aserto.com
+        - https://*aserto-console.netlify.app
+        allowed_headers:
+        - "Authorization"
+        - "Content-Type"
+        - "If-Match"
+        - "If-None-Match"
+        - "Depth"
+        allowed_methods:
+        - "GET"
+        - "POST"
+        - "HEAD"
+        - "DELETE"
+        - "PUT"
+        - "PATCH"
+        - "PROFIND"
+        - "MKCOL"
+        - "COPY"
+        - "MOVE"
+        http: false
+        read_timeout: 2s
+        read_header_timeout: 2s
+        write_timeout: 2s
+        idle_timeout: 30s
+
+opa:
+  instance_id: "-"
+  graceful_shutdown_period_seconds: 2
+  # max_plugin_wait_time_seconds: 30 set as default
+  local_bundles:
+    paths: []
+    skip_verification: true
+  config:
+    services:
+      ghcr:
+        url: https://ghcr.io
+        type: "oci"
+        response_header_timeout_seconds: 5
+    bundles:
+      test:
+        service: ghcr
+        resource: "ghcr.io/aserto-policies/policy-rebac:latest"
+        persist: false
+        config:
+          polling:
+            min_delay_seconds: 60
+            max_delay_seconds: 120
