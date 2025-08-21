@@ -1,5 +1,4 @@
 #see https://www.topaz.sh/docs/deployment/docker-compose for instructions
-version: "3.5"
 services:
   topaz-ds:
     command:

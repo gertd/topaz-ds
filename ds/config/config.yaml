@@ -54,8 +54,6 @@ api:
         - https://localhost
         - https://localhost:*
         - https://0.0.0.0:*
-        - https://*.aserto.com
-        - https://*aserto-console.netlify.app
         - https://topaz-ds:19393
         certs:
           tls_key_path: '${TOPAZ_CERTS_DIR}/gateway.key'
@@ -88,8 +86,6 @@ api:
         - https://localhost
         - https://localhost:*
         - https://0.0.0.0:*
-        - https://*.aserto.com
-        - https://*aserto-console.netlify.app
         - https://localhost:19393
         allowed_headers:
         - "Authorization"
@@ -135,8 +131,6 @@ api:
         - https://localhost
         - https://localhost:*
         - https://0.0.0.0:*
-        - https://*.aserto.com
-        - https://*aserto-console.netlify.app
         - https://localhost:19393
         allowed_headers:
         - "Authorization"
@@ -182,8 +176,6 @@ api:
         - https://localhost
         - https://localhost:*
         - https://0.0.0.0:*
-        - https://*.aserto.com
-        - https://*aserto-console.netlify.app
         allowed_headers:
         - "Authorization"
         - "Content-Type"
@@ -248,8 +240,6 @@ api:
         - https://localhost
         - https://localhost:*
         - https://0.0.0.0:*
-        - https://*.aserto.com
-        - https://*aserto-console.netlify.app
         allowed_headers:
         - "Authorization"
         - "Content-Type"
