@@ -28,9 +28,9 @@ topaz-az2  | {"level":"info","component":"edge-ds","component":"kvs","db_path":"
 topaz-az2  | {"level":"info","component":"edge-ds","component":"directory","component":"kvs","db_path":"/db/az2.db","time":"2026-03-25T07:43:46Z","message":"open"}
 ```
 
-### Edge initialization
+### Edge directory initialization DIFF|MANIFEST sync step (1/4)
 
-First edge sync run, note that the health endpoint reports the `sync` service status as `NOT_SERVING` until the initialization is finished. This can be used to detect if the `edge directory` is READY to be used.
+On the very first edge sync run after startup of the process, note that the health endpoint reports the virtual `sync` service status as `NOT_SERVING` until the first startup initialization is finished. This health service status can be used to detect if the `edge directory` is READY to be used.
 
 ```
 topaz-az2  | {"level":"info","component":"edge.plugin","id":"-","enabled":true,"interval":1,"time":"2026-03-25T07:43:46Z","message":"EdgePlugin.Start"}
