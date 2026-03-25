@@ -32,3 +32,4 @@ This repo provides a `docker-compose` base demo setup which demonstrates the abo
 
 Simply pull down the repo and run `docker-compose up` will initialize a `root directory` named `ds` a `remote directory`: `az1` and an `edge directory`: `az2` . 
 
+[Annotated log output](./LOG.md)
