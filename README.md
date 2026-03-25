@@ -4,9 +4,11 @@ Topaz Docker Compose setup
 
 The docker-compose setup consists of:
 
-* ds   - topaz directory only instance (ports GRPC: 19292, HTTP:19393)
-* az-1 - topaz authorizer with a remote directory (ports GRPC: 29292, HTTP:29393)
-* az-2 - topaz authorizer with an edge directory, synchronized from ds (ports GRPC: 39292, HTTP:39393)
+* ds   - topaz `root directory` only instance (ports GRPC: 19292, HTTP:19393)
+* az-1 - topaz authorizer with a `remote directory` (ports GRPC: 29292, HTTP:29393)
+* az-2 - topaz authorizer with an `edge directory`, synchronized from ds (ports GRPC: 39292, HTTP:39393)
+
+See [notes](./NOTES.md) for a more detailed explanation.
 
 Load the manifest into the directory using:
 
